@@ -225,6 +225,7 @@ namespace KaibunStation
 
             using (var cReader = (new System.IO.StreamReader(args[0], System.Text.Encoding.Default)))
             {
+                int kanjicount = 0;
                 int yomicount = 0;
                 int romacount = 0;
 
@@ -234,7 +235,14 @@ namespace KaibunStation
                     var splitResult = stBuffer.Split('\t');
 
                     var kana = splitResult[1].Replace("・", "").Replace('ゔ', 'ヴ');
-                    if(isKaibun(kana))
+
+                    if (isKaibun(splitResult[0]) && splitResult[0].Length >= 2)
+                    {
+                        Console.WriteLine(string.Format("漢字が回文だよ! {0}駅（{1} / {2}）", splitResult[0], splitResult[1], splitResult[3]));
+                        ++kanjicount;
+                    }
+
+                    if (isKaibun(kana))
                     {
                         Console.WriteLine(string.Format("読みが回文だよ! {0}駅（{1} / {2}）", splitResult[0], splitResult[1], splitResult[3]));
                         ++yomicount;
@@ -247,6 +255,7 @@ namespace KaibunStation
                     }
                 }
 
+                Console.WriteLine("漢字が回文の駅は " + kanjicount + " 駅ありました。");
                 Console.WriteLine("読みが回文の駅は " + yomicount + " 駅ありました。");
                 Console.WriteLine("ローマ字が回文の駅は " + romacount + " 駅ありました。");
             }
